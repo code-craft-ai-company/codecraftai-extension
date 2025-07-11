@@ -23,52 +23,46 @@ from typing import Callable, Generator, List, Type, Union
 
 from automojo.extension.utilities import import_by_name
 
-from automojo.extension.factory.factoryprotocol import FactoryProtocol
+from automojo.extension.factory.factoryextension import FactoryExtension
 from automojo.extension.factory.factoryprotocolbase import FactoryProtocolBase
 
 
 logger = logging.getLogger()
 
 
-def is_subclass_of_factory_protocol(cand_type):
+def is_subclass_of_factory_extension(cand_type):
     """
-        Returns a boolean value indicating if the candidate type is a subclass
-        of :class:`FactoryProtocol`.
+        Returns a boolean value indicating if the candidate type is a subclass of :class:`FactoryExtension`.
     """
     is_scoep = False
     if inspect.isclass(cand_type):
-        if cand_type != FactoryProtocol and issubclass(cand_type, FactoryProtocol):
+        if cand_type != FactoryExtension and issubclass(cand_type, FactoryExtension):
             is_scoep = True
+
     return is_scoep
 
 
-def load_and_set_extension_factory_type(module_name: str):
+def load_and_set_factoryextension_types(module_name: str) -> List[FactoryExtension]:
     """
-        Scans the module provided for :class:`FactoryProtocol` derived classes and will
+        Scans the module provided for :class:`FactoryExtension` derived classes and will
         take the first one and assign it as the current runtime landscape type.
     """
-    factory_type = None
+    factory_types = []
 
-    fp_module = import_by_name(module_name)
-    class_items = inspect.getmembers(fp_module, is_subclass_of_factory_protocol)
+    fe_module = import_by_name(module_name)
+    class_items = inspect.getmembers(fe_module, is_subclass_of_factory_extension)
 
-    factory_protocols = []
+    factory_types = []
     for _, cls_type in class_items:
         type_module_name = cls_type.__module__
-        if type_module_name == fp_module.__name__:
-            factory_protocols.append(cls_type)
+        if type_module_name == fe_module.__name__:
+            factory_types.append(cls_type)
 
-    if len(factory_protocols) > 1:
-        wmsg = f"Only one FactoryProtocol class is allowed per module in order to perserve ordering. module={fp_module}"
-        logger.warning(wmsg)
-
-    if len(factory_protocols) > 0:
-        factory_type = factory_protocols[0]
     else:
-        wmsg = f"Found factory protocol module={fp_module} without an `FactoryProtocol` derived class."
+        wmsg = f"Found factory protocol module={fe_module} without an `FactoryExtension` derived class."
         logger.warning(wmsg)
 
-    return factory_type
+    return factory_types
 
 
 def scan_automojo_factories_namespace() -> List[str]:
@@ -130,12 +124,12 @@ class SuperFactory:
         if len(factory_modules) > 0:
             self._factory_modules.extend(factory_modules)
 
-        self._protocol_factories: List[Union[FactoryProtocol, FactoryProtocolBase]] = []
+        self._protocol_factories: List[Union[FactoryExtension, FactoryProtocolBase]] = []
 
         for smod in self._factory_modules:
-            factory_type = load_and_set_extension_factory_type(smod)
-            if factory_type is not None:
-                self._protocol_factories.append(factory_type)
+            factory_types = load_and_set_factoryextension_types(smod)
+            for ftype in factory_types:
+                self._protocol_factories.append(ftype)
 
         self._protocol_factories.sort(key=attrgetter('PRECEDENCE'))
 
@@ -164,10 +158,12 @@ class SuperFactory:
         if factory_module not in self._factory_modules:
             self._factory_modules.append(factory_module)
 
-            factory_type = load_and_set_extension_factory_type(factory_module)
-            if factory_type is not None:
-                self._protocol_factories.append(factory_type)
-                self._protocol_factories.sort(key=attrgetter('PRECEDENCE'))
+            factory_types = load_and_set_factoryextension_types(factory_module)
+            for ftype in factory_types:
+                self._protocol_factories.append(ftype)
+            
+            self._protocol_factories.sort(key=attrgetter('PRECEDENCE'))
+
         return
 
     def create_instance_by_order(self, factory_method: Callable, *args, **kwargs) -> Union[object, None]:

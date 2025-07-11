@@ -1,7 +1,7 @@
 """
-.. module:: extensionprotocolbase
+.. module:: factoryprotocolbase
     :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module that contains the ExtProtocol base type.
+    :synopsis: Module that contains the FactoryProtocolBase base type.
 
 .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
