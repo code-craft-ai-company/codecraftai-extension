@@ -16,7 +16,7 @@ keywords = [
 packages = [{include="automojo", from="source/packages"}]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<4.0"
+python = ">=3.11,<4.0"
 
 [tool.poetry.group.dev.dependencies]
 
