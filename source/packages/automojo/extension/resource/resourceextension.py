@@ -34,7 +34,7 @@ class ResourceExtension: # pylint: disable=too-few-public-methods
     """
 
 
-def collect_extensions_under_code_container(container: ModuleType,
+def collect_resource_extensions_under_code_container(container: ModuleType,
             ext_base_type: Type[ResourceExtension]) -> List[Type[ResourceExtension]]:
     """
         Scans the code `container` provide and all descendant containers for classes
@@ -88,7 +88,7 @@ def collect_extensions_under_code_container(container: ModuleType,
     return ext_collection
 
 
-def collect_extensions_under_folder(extension_folder: str, ext_base_type: Type[ResourceExtension],
+def collect_resource_extensions_under_folder(extension_folder: str, ext_base_type: Type[ResourceExtension],
                                     module_base: str="akit.ext.generated") -> List[type]:
     """
         Scans the code `container` provide and all descendant containers for classes
