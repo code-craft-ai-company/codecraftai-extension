@@ -22,7 +22,7 @@ from automojo.extension.factory.superfactory import (
 
 class ExampleProtocol(FactoryProtocolBase):
 
-    ext_protocol_name = "example"
+    factory_protocol_name = "example"
 
     def create_thing(self, value):
         raise NotImplementedError()
@@ -36,14 +36,14 @@ class ExampleProtocol(FactoryProtocolBase):
 
 def make_factory(module_name: str, precedence: int, prefix: str):
 
-    protocol_name: str = f"{prefix.lower()}-protocol"
+    protocol_name: str = ExampleProtocol.factory_protocol_name
 
     module = types.ModuleType(module_name)
     code = f"""
 from automojo.extension.factory.factoryextension import FactoryExtension
 class {prefix}Factory(FactoryExtension):
     PRECEDENCE = {precedence}
-    ext_protocol_name = '{protocol_name}'
+    factory_protocol_name = '{protocol_name}'
     @staticmethod
     def create_thing(value):
         return '{prefix}:' + str(value)
@@ -93,9 +93,9 @@ class TestSuperFactoryHelperFunctions(unittest.TestCase):
             )
             sys.path.insert(0, td)
             try:
-                cls = load_and_set_factoryextension_types("singlemod")
-                self.assertIsNotNone(cls)
-                self.assertEqual(cls.__name__, "AF")
+                classes = load_and_set_factoryextension_types("singlemod")
+                self.assertEqual(len(classes), 1)
+                self.assertEqual(classes[0].__name__, "AF")
             finally:
                 sys.path.pop(0)
                 sys.modules.pop("singlemod", None)
@@ -111,11 +111,11 @@ class TestSuperFactoryHelperFunctions(unittest.TestCase):
             )
             sys.path.insert(0, td)
             try:
-                logger = logging.getLogger()
-                with self.assertLogs(logger, level="WARNING") as cm:
-                    cls = load_and_set_factoryextension_types("multimod")
-                self.assertIn("Only one ExtensionPoints class is allowed", cm.output[0])
-                self.assertEqual(cls.__name__, "AFactory")
+                classes = load_and_set_factoryextension_types("multimod")
+                self.assertEqual(len(classes), 2)
+                names = {cls.__name__ for cls in classes}
+                self.assertIn("AFactory", names)
+                self.assertIn("BFactory", names)
             finally:
                 sys.path.pop(0)
                 sys.modules.pop("multimod", None)
@@ -129,11 +129,8 @@ class TestSuperFactoryHelperFunctions(unittest.TestCase):
             )
             sys.path.insert(0, td)
             try:
-                logger = logging.getLogger()
-                with self.assertLogs(logger, level="WARNING") as cm:
-                    cls = load_and_set_factoryextension_types("emptymod")
-                self.assertIn("without an `ExtensionPoints` derived class", cm.output[0])
-                self.assertIsNone(cls)
+                classes = load_and_set_factoryextension_types("emptymod")
+                self.assertEqual(classes, [])
             finally:
                 sys.path.pop(0)
                 sys.modules.pop("emptymod", None)
@@ -171,8 +168,61 @@ class TestSuperFactory(unittest.TestCase):
     """
         SuperFactory tests.
     """
-    
+    def setUp(self):
+        """Create example factory modules for each test."""
+        self.mod_a = "moda"
+        self.mod_b = "modb"
 
+        make_factory(self.mod_a, 10, "A")
+        make_factory(self.mod_b, 5, "B")
+
+        self.modules = [self.mod_a, self.mod_b]
+        self.extra_modules = []
+
+    def tearDown(self):
+        """Remove any modules created during testing."""
+        for mod in self.modules + self.extra_modules:
+            sys.modules.pop(mod, None)
+
+    def test_init_loads_sorted_factories(self):
+        sf = SuperFactory(self.modules)
+        names = [cls.__name__ for cls in sf.extension_factories]
+        self.assertEqual(names, ["BFactory", "AFactory"])
+        for mod in self.modules:
+            self.assertIn(mod, sf.factory_modules)
+
+    def test_add_factory_module(self):
+        sf = SuperFactory([self.mod_a])
+
+        mod_c = "modc"
+        make_factory(mod_c, 1, "C")
+        self.extra_modules.append(mod_c)
+
+        sf.add_factory_module(mod_c)
+
+        names = [cls.__name__ for cls in sf.extension_factories]
+        self.assertEqual(names, ["CFactory", "AFactory"])
+        self.assertIn(mod_c, sf.factory_modules)
+
+    def test_create_instance_by_order(self):
+        sf = SuperFactory(self.modules)
+        result = sf.create_instance_by_order(ExampleProtocol.create_thing, "val")
+        self.assertEqual(result, "A:val")
+
+    def test_create_instance_for_each(self):
+        sf = SuperFactory(self.modules)
+        result = sf.create_instance_for_each(ExampleProtocol.create_thing, "one")
+        self.assertEqual(result, ["B:one", "A:one"])
+
+    def test_get_override_types_by_order(self):
+        sf = SuperFactory(self.modules)
+        result = sf.get_override_types_by_order(ExampleProtocol.get_type)
+        self.assertEqual(result, "AType")
+
+    def test_iterate_override_types_for_each(self):
+        sf = SuperFactory(self.modules)
+        result = list(sf.iterate_override_types_for_each(ExampleProtocol.get_many_types))
+        self.assertEqual(result, ["B1", "B2", "A1", "A2"])
 
 if __name__ == "__main__":
     unittest.main()

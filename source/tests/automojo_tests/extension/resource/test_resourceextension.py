@@ -5,8 +5,8 @@ import tempfile
 
 from automojo.extension.resource.resourceextension import (
     ResourceExtension,
-    collect_extensions_under_code_container,
-    collect_extensions_under_folder,
+    collect_resource_extensions_under_code_container,
+    collect_resource_extensions_under_folder,
     generate_extension_key,
 )
 
@@ -25,11 +25,11 @@ class TestResourceExtension(unittest.TestCase):
             try:
                 import importlib
                 pkg = importlib.import_module('pkg')
-                exts = collect_extensions_under_code_container(pkg, ResourceExtension)
+                exts = collect_resource_extensions_under_code_container(pkg, ResourceExtension)
                 names = [name for name, _ in exts]
                 self.assertIn('Child', names)
 
-                exts2 = collect_extensions_under_folder(pkgdir, ResourceExtension, module_base='pkg')
+                exts2 = collect_resource_extensions_under_folder(pkgdir, ResourceExtension, module_base='pkg')
                 names2 = [name for name, _ in exts2]
                 self.assertIn('Child', names2)
 
@@ -60,7 +60,7 @@ class TestResourceExtension(unittest.TestCase):
             try:
                 import importlib
                 pkg = importlib.import_module(pkg_name)
-                exts = collect_extensions_under_code_container(pkg, ResourceExtension)
+                exts = collect_resource_extensions_under_code_container(pkg, ResourceExtension)
                 names = {name for name, _ in exts}
                 self.assertIn('RootExt', names)
                 self.assertIn('SubExt', names)
@@ -86,7 +86,7 @@ class TestResourceExtension(unittest.TestCase):
             try:
                 import importlib
                 pkg = importlib.import_module(pkg_name)
-                exts = collect_extensions_under_code_container(pkg, ResourceExtension)
+                exts = collect_resource_extensions_under_code_container(pkg, ResourceExtension)
                 names = {name for name, _ in exts}
                 self.assertIn('Base', names)
                 self.assertNotIn('Child', names)
@@ -109,7 +109,7 @@ class TestResourceExtension(unittest.TestCase):
             try:
                 import importlib
                 pkg = importlib.import_module(pkg_name)
-                exts = collect_extensions_under_code_container(pkg, ResourceExtension)
+                exts = collect_resource_extensions_under_code_container(pkg, ResourceExtension)
                 self.assertEqual(exts, [])
             finally:
                 sys.path.pop(0)
@@ -130,7 +130,7 @@ class TestResourceExtension(unittest.TestCase):
                 f.write('from automojo.extension.resource.resourceextension import ResourceExtension\n'
                         'class BExt(ResourceExtension):\n    pass\n')
 
-            exts = collect_extensions_under_folder(ext_root, ResourceExtension, module_base='gen')
+            exts = collect_resource_extensions_under_folder(ext_root, ResourceExtension, module_base='gen')
             names = {name for name, _ in exts}
             self.assertIn('AExt', names)
             self.assertIn('BExt', names)
@@ -152,7 +152,7 @@ class TestResourceExtension(unittest.TestCase):
             with open(os.path.join(ext_root, 'bad.txt'), 'w') as f:
                 f.write('class Bad(ResourceExtension): pass')
 
-            exts = collect_extensions_under_folder(ext_root, ResourceExtension, module_base='gen')
+            exts = collect_resource_extensions_under_folder(ext_root, ResourceExtension, module_base='gen')
             names = {name for name, _ in exts}
             self.assertIn('Good', names)
             self.assertNotIn('ShouldSkip', names)
