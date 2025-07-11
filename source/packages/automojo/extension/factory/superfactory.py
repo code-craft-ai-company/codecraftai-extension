@@ -44,8 +44,7 @@ def is_subclass_of_factory_extension(cand_type):
 
 def load_and_set_factoryextension_types(module_name: str) -> List[FactoryExtension]:
     """
-        Scans the module provided for :class:`FactoryExtension` derived classes and will
-        take the first one and assign it as the current runtime landscape type.
+        Scans the module provided for :class:`FactoryExtension` derived classes.
     """
     factory_types = []
 
