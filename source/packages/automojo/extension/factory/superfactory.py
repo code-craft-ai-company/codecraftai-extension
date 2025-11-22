@@ -56,10 +56,9 @@ def load_and_set_factoryextension_types(module_name: str) -> List[FactoryExtensi
         type_module_name = cls_type.__module__
         if type_module_name == fe_module.__name__:
             factory_types.append(cls_type)
-
-    else:
-        wmsg = f"Found factory protocol module={fe_module} without an `FactoryExtension` derived class."
-        logger.warning(wmsg)
+        else:
+            wmsg = f"Found factory protocol module={fe_module} without an `FactoryExtension` derived class."
+            logger.warning(wmsg)
 
     return factory_types
 
