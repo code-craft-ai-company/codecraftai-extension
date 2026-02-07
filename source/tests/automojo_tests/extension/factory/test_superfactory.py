@@ -24,13 +24,16 @@ class ExampleProtocol(FactoryProtocolBase):
 
     factory_protocol_name = "example"
 
-    def create_thing(self, value):
+    @classmethod
+    def create_thing(cls, value):
         raise NotImplementedError()
 
-    def get_type(self):
+    @classmethod
+    def get_type(cls):
         raise NotImplementedError()
 
-    def get_many_types(self):
+    @classmethod
+    def get_many_types(cls):
         raise NotImplementedError()
 
 
@@ -44,14 +47,14 @@ from automojo.extension.factory.factoryextension import FactoryExtension
 class {prefix}Factory(FactoryExtension):
     PRECEDENCE = {precedence}
     factory_protocol_name = '{protocol_name}'
-    @staticmethod
-    def create_thing(value):
+    @classmethod
+    def create_thing(cls, value):
         return '{prefix}:' + str(value)
-    @staticmethod
-    def get_type():
+    @classmethod
+    def get_type(cls):
         return '{prefix}Type'
-    @staticmethod
-    def get_many_types():
+    @classmethod
+    def get_many_types(cls):
         return ['{prefix}1', '{prefix}2']
 """
     exec(code, module.__dict__)
