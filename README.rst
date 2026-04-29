@@ -1,31 +1,68 @@
-==================
-automojo-extension
-==================
+==========================
+Automation Mojo Extension
+==========================
 
-Automation Mojo - Extension Package
+The ``automojo-extension`` package provides the lightweight extension and factory machinery that other automojo packages use to allow third-party code to plug in new resource types, coordinators, and protocol handlers without modifying the host package. Extensions are typically declared via entry points and picked up by extension-aware packages such as ``automojo-landscaping``, ``automojo-interop``, and the ``automojo-interop-ext-*`` packages.
 
-Overview
-========
-automojo-extension is a core component of the Automation Mojo technology stack. It provides robust, reusable foundation code designed to enable and orchestrate complex software automation tasks.
+Highlights
+==========
 
-Installation
-============
-Using Poetry:
+- ``FactoryExtension`` plus ``FactoryProtocolBase`` and ``SuperFactory`` for pluggable object construction.
+- ``ResourceExtension`` for resources that must be discovered and registered at runtime.
+- Entry-point driven registration so third-party packages can contribute without modifying host code.
+- Used as the substrate for the composable ``automojo-interop-ext-*`` ecosystem of device types, protocols, and services.
+
+Repository Structure
+====================
+
+- ``development/`` - Runtime environment scripts.
+- ``repository-setup/`` - Repository homing and setup scripts.
+- ``source/packages/`` - Package source code.
+- ``source/tests/`` - ``unittest``-based tests.
+- ``specs/`` - Requirements, design, and task documentation.
+- ``userguide/`` - Standards, conventions, and documentation.
+
+Environment Setup
+=================
+
+When working in a Codex container:
 
 .. code-block:: bash
 
-    poetry add automojo-extension
+   ./development/setup-agent-container
 
-Development
-===========
-This repository provides a standard Poetry environment.
+For local development:
 
-1. Activate virtual environment:
-   Run `poetry shell` and `poetry install`
-2. Test Execution:
-   Run `poetry run pytest`
+.. code-block:: bash
 
-References
-==========
-- `User Guide <userguide/userguide.rst>`
-- `Coding Standards <userguide/10-00-coding-standards.rst>`
+   ./repository-setup/rehome-repository
+   ./development/setup-envrionment
+
+Running Tests
+=============
+
+Activate the virtual environment:
+
+.. code-block:: bash
+
+   source .venv/bin/activate
+
+Run ``unittest`` tests:
+
+.. code-block:: bash
+
+   python -m unittest discover -s source/tests -p "test_*.py"
+
+Standards and Conventions
+=========================
+
+- Naming conventions: ``userguide/10-02-naming-conventions.rst``
+- Code organization: ``userguide/10-01-code-organization.rst``
+- Coding standards: ``userguide/10-00-coding-standards.rst``
+
+Additional Resources
+====================
+
+- User guide entry point: ``userguide/userguide.rst``
+- Design documentation: ``specs/design.md``
+- Requirements: ``specs/requirements.md``
