@@ -15,7 +15,7 @@
 - **TASK-001** ✅ Implement `FactoryProtocolBase` class with protocol naming enforcement
   - **Requirements**: REQ-F-001, REQ-F-002, REQ-F-003
   - **Status**: Complete - implemented in `factoryprotocolbase.py`
-  - **Validation**: `__init_subclass__` validates `factory_protocol_name` is set
+  - **Validation**: `__init_subclass__` validates `factory_protocol_name` is set. Error message correctly references `factory_protocol_name`.
 
 - **TASK-002** 🧪 Add comprehensive protocol validation and error handling
   - **Requirements**: REQ-F-002, REQ-NF-012
@@ -73,7 +73,7 @@
 - **TASK-012** ✅ Implement single-instance creation method
   - **Requirements**: REQ-F-016, REQ-F-020
   - **Status**: Complete - `create_instance_by_order()` implemented
-  - **Validation**: Returns first successful factory creation
+  - **Validation**: Iterates all matching factories in precedence order, returns result from last match (lowest precedence). Note: the loop does not break on first match — it overwrites `create_instance` on each match, so the last factory in precedence order wins.
 
 - **TASK-013** ✅ Implement multi-instance creation method
   - **Requirements**: REQ-F-017
@@ -83,7 +83,7 @@
 - **TASK-014** ✅ Implement type override retrieval methods
   - **Requirements**: REQ-F-018, REQ-F-019
   - **Status**: Complete - both methods implemented
-  - **Validation**: `get_override_types_by_order()` and `iterate_override_types_for_each()`
+  - **Validation**: `get_override_types_by_order()` iterates all matches and uses last (same loop-overwrite pattern as `create_instance_by_order`); `iterate_override_types_for_each()` yields from all matches. `iterate_override_types_for_each` supports flattening list results via `iterate_type_lists` parameter.
 
 - **TASK-015** 🧪 Add comprehensive factory method resolution testing
   - **Requirements**: REQ-F-020, REQ-NF-013

@@ -32,7 +32,7 @@ class FactoryProtocolBase(Protocol):
         """
         if cls.factory_protocol_name is None:
             errmsg = (
-                "The 'protocol_name' class level field must be set on derived protocol types."
+                "The 'factory_protocol_name' class level field must be set on derived protocol types."
             )
             raise RuntimeError(errmsg)
         return super().__init_subclass__(*args, **kwargs)

@@ -76,11 +76,11 @@ The orchestration engine that manages factory lifecycles:
 **Core Capabilities:**
 - **Automatic Discovery**: Scans `automojo.factories` namespace and additional modules
 - **Precedence Management**: Sorts factories by `PRECEDENCE` attribute (ascending order)
-- **Protocol Resolution**: Matches factory methods to protocol definitions
+- **Protocol Resolution**: Matches factory methods to protocol definitions; iterates all matching factories and uses the last match (lowest precedence wins for `by_order` methods)
 - **Multiple Creation Modes**:
-  - `create_instance_by_order()`: Returns first successful creation
+  - `create_instance_by_order()`: Iterates all matching factories, returns result from last match
   - `create_instance_for_each()`: Returns list from all matching factories
-  - `get_override_types_by_order()`: Returns type from highest precedence factory
+  - `get_override_types_by_order()`: Iterates all matching factories, returns type from last match
   - `iterate_override_types_for_each()`: Yields types from all factories
 
 ### Factory Discovery Algorithm
@@ -145,17 +145,18 @@ Scans Python packages/modules for extension classes:
 1. Traverses package directory structure
 2. Imports each Python module
 3. Inspects module members for extension classes
-4. Filters by inheritance from specified base type
-5. Returns collection of discovered extension types
+4. Filters by direct inheritance from specified base type (only direct subclasses, not transitive)
+5. Returns collection of discovered extension name-type pairs as `list[tuple[str, type]]`
 
 #### collect_resource_extensions_under_folder()
 
 Scans filesystem directories for extension classes:
 
-**Use Cases:**
-- Loading extensions from external directories
-- Dynamic plugin discovery from configuration paths
-- Runtime extension registration
+**Returns:** `list[tuple[str, type]]` — name-type pairs from `inspect.getmembers`
+
+**Notes:**
+- Skips `__init__.py` files (only processes non-init Python files)
+- Uses `import_file` with `by_file_only=True` for loading
 
 #### generate_extension_key()
 

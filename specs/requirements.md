@@ -15,7 +15,7 @@
 - **REQ-F-006**: The system SHALL support precedence-based factory ordering through a `PRECEDENCE` attribute (lower values = higher priority)
 - **REQ-F-007**: The system SHALL automatically discover factory classes that inherit from `FactoryExtension`
 - **REQ-F-008**: The system SHALL associate factories with protocols through matching `factory_protocol_name` attributes
-- **REQ-F-009**: The system SHALL support static factory methods for object creation
+- **REQ-F-009**: The system SHALL support class method and static factory methods for object creation
 
 #### 1.1.3 Factory Discovery and Loading
 - **REQ-F-010**: The system SHALL automatically scan the `automojo.factories` namespace in all directories within `sys.path`
@@ -26,9 +26,9 @@
 
 #### 1.1.4 Factory Orchestration
 - **REQ-F-015**: The system SHALL provide a `SuperFactory` class that manages factory lifecycles and execution
-- **REQ-F-016**: The system SHALL support single-instance creation via `create_instance_by_order()` method
+- **REQ-F-016**: The system SHALL support single-instance creation via `create_instance_by_order()` method, which iterates all matching factories in precedence order and returns the result from the last (lowest-precedence) match
 - **REQ-F-017**: The system SHALL support multi-instance creation via `create_instance_for_each()` method
-- **REQ-F-018**: The system SHALL support type override retrieval via `get_override_types_by_order()` method
+- **REQ-F-018**: The system SHALL support type override retrieval via `get_override_types_by_order()` method, which iterates all matching factories and returns the type from the last (lowest-precedence) match
 - **REQ-F-019**: The system SHALL support type iteration via `iterate_override_types_for_each()` method
 - **REQ-F-020**: The system SHALL match factory methods to protocol definitions through method name resolution
 
@@ -44,7 +44,7 @@
 #### 1.2.2 Extension Management
 - **REQ-F-026**: The system SHALL generate unique hierarchical keys for discovered extensions
 - **REQ-F-027**: The system SHALL support namespace collision resolution through key generation
-- **REQ-F-028**: The system SHALL return collections of discovered extension types
+- **REQ-F-028**: The system SHALL return collections of discovered extension name-type pairs (tuples of `(name, type)`)
 - **REQ-F-029**: The system SHALL support custom extension base types for domain-specific hierarchies
 
 ### 1.3 Utility Layer

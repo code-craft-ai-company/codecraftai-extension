@@ -244,7 +244,7 @@ class SuperFactory:
         
         return found_type
     
-    def iterate_override_types_for_each(self, get_type_method: Callable, interate_type_lists: bool = True) -> Generator[Union[Type, List[Type], None], None, None]:
+    def iterate_override_types_for_each(self, get_type_method: Callable, iterate_type_lists: bool = True) -> Generator[Union[Type, List[Type], None], None, None]:
         """
             Yield override types from each factory in order.
         """
@@ -266,7 +266,7 @@ class SuperFactory:
             
                     found_type = get_type_with()
 
-                    if interate_type_lists and type(found_type) is list:
+                    if iterate_type_lists and type(found_type) is list:
                         for ftitem in found_type:
                             yield ftitem
                     else:
