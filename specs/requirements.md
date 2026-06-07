@@ -18,7 +18,7 @@
 - **REQ-F-009**: The system SHALL support class method and static factory methods for object creation
 
 #### 1.1.3 Factory Discovery and Loading
-- **REQ-F-010**: The system SHALL automatically scan the `automojo.factories` namespace in all directories within `sys.path`
+- **REQ-F-010**: The system SHALL automatically scan the `ccai.factories` namespace in all directories within `sys.path`
 - **REQ-F-011**: The system SHALL support loading additional factory modules specified by the user
 - **REQ-F-012**: The system SHALL dynamically import discovered factory modules at runtime
 - **REQ-F-013**: The system SHALL inspect loaded modules to identify `FactoryExtension` subclasses
@@ -180,7 +180,7 @@
 - **REQ-I-016**: The system SHALL support factory precedence configuration
 
 #### 3.2.2 Discovery Configuration
-- **REQ-I-017**: The system SHALL support custom namespace scanning beyond `automojo.factories`
+- **REQ-I-017**: The system SHALL support custom namespace scanning beyond `ccai.factories`
 - **REQ-I-018**: The system SHALL support custom module prefixes for resource discovery
 - **REQ-I-019**: The system SHALL support custom base types for extension filtering
 - **REQ-I-020**: The system SHALL support custom directory paths for file-based discovery

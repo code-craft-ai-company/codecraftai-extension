@@ -17,7 +17,7 @@ The framework consists of three primary subsystems:
 ### Package Structure
 
 ```
-automojo/extension/
+ccai/extension/
 ├── constants.py           # Framework constants
 ├── utilities.py          # Core utility functions
 ├── factory/              # Factory pattern implementation
@@ -74,7 +74,7 @@ class FactoryExtension:
 The orchestration engine that manages factory lifecycles:
 
 **Core Capabilities:**
-- **Automatic Discovery**: Scans `automojo.factories` namespace and additional modules
+- **Automatic Discovery**: Scans `ccai.factories` namespace and additional modules
 - **Precedence Management**: Sorts factories by `PRECEDENCE` attribute (ascending order)
 - **Protocol Resolution**: Matches factory methods to protocol definitions; iterates all matching factories and uses the last match (lowest precedence wins for `by_order` methods)
 - **Multiple Creation Modes**:
@@ -85,7 +85,7 @@ The orchestration engine that manages factory lifecycles:
 
 ### Factory Discovery Algorithm
 
-1. **Namespace Scanning**: Searches all directories in `sys.path` for `automojo/factories`
+1. **Namespace Scanning**: Searches all directories in `sys.path` for `ccai/factories`
 2. **Module Loading**: Dynamically imports discovered Python modules
 3. **Type Inspection**: Identifies classes inheriting from `FactoryExtension`
 4. **Protocol Matching**: Associates factories with protocols via `factory_protocol_name`

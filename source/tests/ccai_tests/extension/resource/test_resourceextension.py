@@ -3,7 +3,7 @@ import sys
 import unittest
 import tempfile
 
-from automojo.extension.resource.resourceextension import (
+from ccai.extension.resource.resourceextension import (
     ResourceExtension,
     collect_resource_extensions_under_code_container,
     collect_resource_extensions_under_folder,
@@ -19,7 +19,7 @@ class TestResourceExtension(unittest.TestCase):
             with open(os.path.join(pkgdir, '__init__.py'), 'w'):
                 pass
             with open(os.path.join(pkgdir, 'ext.py'), 'w') as f:
-                f.write('from automojo.extension.resource.resourceextension import ResourceExtension\n'
+                f.write('from ccai.extension.resource.resourceextension import ResourceExtension\n'
                         'class Child(ResourceExtension):\n    pass\n')
             sys.path.insert(0, td)
             try:
@@ -50,10 +50,10 @@ class TestResourceExtension(unittest.TestCase):
             with open(os.path.join(sub_pkg, '__init__.py'), 'w'):
                 pass
             with open(os.path.join(pkg_root, 'rootext.py'), 'w') as f:
-                f.write('from automojo.extension.resource.resourceextension import ResourceExtension\n'
+                f.write('from ccai.extension.resource.resourceextension import ResourceExtension\n'
                         'class RootExt(ResourceExtension):\n    pass\n')
             with open(os.path.join(sub_pkg, 'subext.py'), 'w') as f:
-                f.write('from automojo.extension.resource.resourceextension import ResourceExtension\n'
+                f.write('from ccai.extension.resource.resourceextension import ResourceExtension\n'
                         'class SubExt(ResourceExtension):\n    pass\n')
 
             sys.path.insert(0, td)
@@ -78,7 +78,7 @@ class TestResourceExtension(unittest.TestCase):
             with open(os.path.join(pkg_root, '__init__.py'), 'w'):
                 pass
             with open(os.path.join(pkg_root, 'ext.py'), 'w') as f:
-                f.write('from automojo.extension.resource.resourceextension import ResourceExtension\n'
+                f.write('from ccai.extension.resource.resourceextension import ResourceExtension\n'
                         'class Base(ResourceExtension):\n    pass\n'
                         'class Child(Base):\n    pass\n')
 
@@ -123,11 +123,11 @@ class TestResourceExtension(unittest.TestCase):
             os.makedirs(os.path.join(ext_root, 'sub2', 'nested'))
 
             with open(os.path.join(ext_root, 'sub1', 'aext.py'), 'w') as f:
-                f.write('from automojo.extension.resource.resourceextension import ResourceExtension\n'
+                f.write('from ccai.extension.resource.resourceextension import ResourceExtension\n'
                         'class AExt(ResourceExtension):\n    pass\n')
 
             with open(os.path.join(ext_root, 'sub2', 'nested', 'bext.py'), 'w') as f:
-                f.write('from automojo.extension.resource.resourceextension import ResourceExtension\n'
+                f.write('from ccai.extension.resource.resourceextension import ResourceExtension\n'
                         'class BExt(ResourceExtension):\n    pass\n')
 
             exts = collect_resource_extensions_under_folder(ext_root, ResourceExtension, module_base='gen')
@@ -141,11 +141,11 @@ class TestResourceExtension(unittest.TestCase):
             os.makedirs(ext_root)
 
             with open(os.path.join(ext_root, '__init__.py'), 'w') as f:
-                f.write('from automojo.extension.resource.resourceextension import ResourceExtension\n'
+                f.write('from ccai.extension.resource.resourceextension import ResourceExtension\n'
                         'class ShouldSkip(ResourceExtension):\n    pass\n')
 
             with open(os.path.join(ext_root, 'good.py'), 'w') as f:
-                f.write('from automojo.extension.resource.resourceextension import ResourceExtension\n'
+                f.write('from ccai.extension.resource.resourceextension import ResourceExtension\n'
                         'class Good(ResourceExtension):\n    pass\n')
 
             # Non-python file that should be ignored

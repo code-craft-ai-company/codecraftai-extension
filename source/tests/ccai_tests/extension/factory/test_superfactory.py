@@ -7,13 +7,13 @@ import unittest
 
 from unittest.mock import patch
 
-from automojo.extension.utilities import import_by_name
-from automojo.extension.factory.factoryextension import FactoryExtension
-from automojo.extension.factory.factoryprotocolbase import FactoryProtocolBase
-from automojo.extension.factory.superfactory import (
+from ccai.extension.utilities import import_by_name
+from ccai.extension.factory.factoryextension import FactoryExtension
+from ccai.extension.factory.factoryprotocolbase import FactoryProtocolBase
+from ccai.extension.factory.superfactory import (
     is_subclass_of_factory_extension,
     load_and_set_factoryextension_types,
-    scan_automojo_factories_namespace,
+    scan_ccai_factories_namespace,
     scan_for_descendant_modules,
     SuperFactory
 )
@@ -43,7 +43,7 @@ def make_factory(module_name: str, precedence: int, prefix: str):
 
     module = types.ModuleType(module_name)
     code = f"""
-from automojo.extension.factory.factoryextension import FactoryExtension
+from ccai.extension.factory.factoryextension import FactoryExtension
 class {prefix}Factory(FactoryExtension):
     PRECEDENCE = {precedence}
     factory_protocol_name = '{protocol_name}'
@@ -91,7 +91,7 @@ class TestSuperFactoryHelperFunctions(unittest.TestCase):
             self._write_module(
                 td,
                 "singlemod",
-                "from automojo.extension.factory.factoryextension import FactoryExtension\n"
+                "from ccai.extension.factory.factoryextension import FactoryExtension\n"
                 "class AF(FactoryExtension):\n    pass\n",
             )
             sys.path.insert(0, td)
@@ -108,7 +108,7 @@ class TestSuperFactoryHelperFunctions(unittest.TestCase):
             self._write_module(
                 td,
                 "multimod",
-                "from automojo.extension.factory.factoryextension import FactoryExtension\n"
+                "from ccai.extension.factory.factoryextension import FactoryExtension\n"
                 "class AFactory(FactoryExtension):\n    pass\n"
                 "class BFactory(FactoryExtension):\n    pass\n",
             )
@@ -138,18 +138,18 @@ class TestSuperFactoryHelperFunctions(unittest.TestCase):
                 sys.path.pop(0)
                 sys.modules.pop("emptymod", None)
 
-    def test_scan_automojo_factories_namespace_discovers(self):
+    def test_scan_ccai_factories_namespace_discovers(self):
         with tempfile.TemporaryDirectory() as td:
-            factories_dir = os.path.join(td, "automojo", "factories")
+            factories_dir = os.path.join(td, "ccai", "factories")
             os.makedirs(factories_dir)
             self._write_module(factories_dir, "example", "value = 5\n")
             sys.path.insert(0, td)
             try:
-                modules = scan_automojo_factories_namespace()
-                self.assertIn("automojo.factories.example", modules)
+                modules = scan_ccai_factories_namespace()
+                self.assertIn("ccai.factories.example", modules)
             finally:
                 sys.path.pop(0)
-                sys.modules.pop("automojo.factories.example", None)
+                sys.modules.pop("ccai.factories.example", None)
 
     def test_scan_for_descendant_modules_builds_names(self):
         with tempfile.TemporaryDirectory() as td:

@@ -44,10 +44,10 @@
   - **Actions**: Validate static methods, check method signatures match protocols
 
 #### 1.1.3 Factory Discovery and Loading
-- **TASK-007** ✅ Implement namespace scanning for `automojo.factories`
+- **TASK-007** ✅ Implement namespace scanning for `ccai.factories`
   - **Requirements**: REQ-F-010, REQ-F-012
-  - **Status**: Complete - implemented in `scan_automojo_factories_namespace()`
-  - **Validation**: Scans sys.path for automojo/factories directories
+  - **Status**: Complete - implemented in `scan_ccai_factories_namespace()`
+  - **Validation**: Scans sys.path for ccai/factories directories
 
 - **TASK-008** ✅ Implement additional factory module loading
   - **Requirements**: REQ-F-011, REQ-I-013, REQ-I-014
@@ -361,16 +361,16 @@
 ### 7.1 Package Structure Completion
 
 - **TASK-061** ❌ Create missing `__init__.py` files
-  - **Files**: `source/packages/automojo/extension/__init__.py`
-  - **Files**: `source/packages/automojo/extension/factory/__init__.py`
-  - **Files**: `source/packages/automojo/extension/resource/__init__.py`
+  - **Files**: `source/packages/ccai/extension/__init__.py`
+  - **Files**: `source/packages/ccai/extension/factory/__init__.py`
+  - **Files**: `source/packages/ccai/extension/resource/__init__.py`
   - **Status**: Files are empty or missing
   - **Actions**: Add proper module initialization and exports
 
 ### 7.2 Constants and Configuration
 
 - **TASK-062** 🔄 Enhance constants module
-  - **File**: `source/packages/automojo/extension/constants.py`
+  - **File**: `source/packages/ccai/extension/constants.py`
   - **Status**: Only contains `EXT_MOD_SEP`, needs expansion
   - **Actions**: Add framework-wide constants, configuration defaults
 

@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "automojo-extension"
-description = "Automation Mojo - Extension Package"
+name = "codecraftai-extension"
+description = "Code Craft AI - Extension Package"
 version = "0.0.1"
 authors = ["Myron W. Walker"]
 readme = "README.rst"
@@ -13,7 +13,7 @@ classifiers = [
 keywords = [
     "python"
 ]
-packages = [{include="automojo", from="source/packages"}]
+packages = [{include="ccai", from="source/packages"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"

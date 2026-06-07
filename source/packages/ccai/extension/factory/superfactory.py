@@ -8,7 +8,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
@@ -21,10 +21,10 @@ import sys
 from operator import attrgetter
 from typing import Callable, Generator, List, Type, Union
 
-from automojo.extension.utilities import import_by_name
+from ccai.extension.utilities import import_by_name
 
-from automojo.extension.factory.factoryextension import FactoryExtension
-from automojo.extension.factory.factoryprotocolbase import FactoryProtocolBase
+from ccai.extension.factory.factoryextension import FactoryExtension
+from ccai.extension.factory.factoryprotocolbase import FactoryProtocolBase
 
 
 logger = logging.getLogger()
@@ -63,7 +63,7 @@ def load_and_set_factoryextension_types(module_name: str) -> List[FactoryExtensi
     return factory_types
 
 
-def scan_automojo_factories_namespace() -> List[str]:
+def scan_ccai_factories_namespace() -> List[str]:
 
     search_paths = set([p for p in sys.path])
 
@@ -73,7 +73,7 @@ def scan_automojo_factories_namespace() -> List[str]:
     modules_found = []
 
     for dir_path in search_paths:
-        check_dir = os.path.join(dir_path, "automojo", "factories")
+        check_dir = os.path.join(dir_path, "ccai", "factories")
         if os.path.exists(check_dir) and os.path.isdir(check_dir):
             check_dir_modules = scan_for_descendant_modules(check_dir)
             modules_found.extend(check_dir_modules)
@@ -81,7 +81,7 @@ def scan_automojo_factories_namespace() -> List[str]:
     return modules_found
 
 
-def scan_for_descendant_modules(scan_dir: str, module_prefix: str="automojo.factories") -> List[str]:
+def scan_for_descendant_modules(scan_dir: str, module_prefix: str="ccai.factories") -> List[str]:
 
     modules_found = []
 
@@ -118,7 +118,7 @@ class SuperFactory:
             :param factory_modules: Additional factory module paths to load.
         """
 
-        self._factory_modules = scan_automojo_factories_namespace()
+        self._factory_modules = scan_ccai_factories_namespace()
         if len(factory_modules) > 0:
             self._factory_modules.extend(factory_modules)
 
