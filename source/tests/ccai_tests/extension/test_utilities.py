@@ -5,7 +5,7 @@ import types
 import unittest
 
 
-from automojo.extension.utilities import (
+from ccai.extension.utilities import (
     import_by_name,
     import_file,
     get_directory_for_code_container,

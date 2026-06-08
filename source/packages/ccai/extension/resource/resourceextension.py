@@ -8,7 +8,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
@@ -21,7 +21,7 @@ import inspect
 import os
 
 
-from automojo.extension.utilities import get_directory_for_code_container, import_by_name, import_file
+from ccai.extension.utilities import get_directory_for_code_container, import_by_name, import_file
 
 
 NoneType = type(None)
