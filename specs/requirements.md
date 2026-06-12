@@ -1,4 +1,4 @@
-# AutoMojo Extension Framework Requirements
+# Code Craft AI Extension Framework Requirements
 
 ## 1. Functional Requirements
 
@@ -124,8 +124,8 @@
 #### 2.5.1 Code Quality
 - **REQ-NF-033**: The system SHALL prioritize debuggability over performance optimization
 - **REQ-NF-034**: The system SHALL prioritize readability over code conciseness
-- **REQ-NF-035**: The system SHALL follow AutoMojo Python naming conventions
-- **REQ-NF-036**: The system SHALL follow AutoMojo Python code structure standards
+- **REQ-NF-035**: The system SHALL follow Code Craft AI Python naming conventions
+- **REQ-NF-036**: The system SHALL follow Code Craft AI Python code structure standards
 - **REQ-NF-037**: The system SHALL include comprehensive docstrings for all public APIs
 
 #### 2.5.2 Testing Requirements

@@ -1,4 +1,4 @@
-# AutoMojo Extension Framework Implementation Tasks
+# Code Craft AI Extension Framework Implementation Tasks
 
 ## Task Status Legend
 - ✅ **COMPLETE**: Fully implemented and tested
@@ -224,12 +224,12 @@
 - **TASK-038** 📝 Validate naming conventions compliance
   - **Requirements**: REQ-NF-035
   - **Status**: Code appears compliant, needs validation
-  - **Actions**: Review against AutoMojo naming conventions document
+  - **Actions**: Review against Code Craft AI naming conventions document
 
 - **TASK-039** 📝 Validate code structure compliance
   - **Requirements**: REQ-NF-036
   - **Status**: Code appears compliant, needs validation
-  - **Actions**: Review against AutoMojo code structure standards
+  - **Actions**: Review against Code Craft AI code structure standards
 
 ### 3.2 Testing Implementation
 

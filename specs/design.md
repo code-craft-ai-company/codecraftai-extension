@@ -1,8 +1,8 @@
-# AutoMojo Extension Framework Design Document
+# Code Craft AI Extension Framework Design Document
 
 ## Overview
 
-The AutoMojo Extension Framework is a sophisticated plugin architecture designed to enable dynamic loading, discovery, and management of extensible components in Python applications. The framework provides a robust foundation for building modular, testable automation tools with pluggable functionality.
+The Code Craft AI Extension Framework is a sophisticated plugin architecture designed to enable dynamic loading, discovery, and management of extensible components in Python applications. The framework provides a robust foundation for building modular, testable automation tools with pluggable functionality.
 
 ## Architecture
 
@@ -334,6 +334,6 @@ The framework maintains strict backward compatibility:
 
 ## Conclusion
 
-The AutoMojo Extension Framework provides a robust, scalable foundation for building extensible automation tools. Its protocol-oriented design ensures type safety while maintaining flexibility, and its comprehensive testing coverage ensures reliability in production environments.
+The Code Craft AI Extension Framework provides a robust, scalable foundation for building extensible automation tools. Its protocol-oriented design ensures type safety while maintaining flexibility, and its comprehensive testing coverage ensures reliability in production environments.
 
 The framework's modular architecture enables teams to build complex automation systems with clear separation of concerns, pluggable functionality, and maintainable codebases that prioritize debuggability and readability over performance optimization.
