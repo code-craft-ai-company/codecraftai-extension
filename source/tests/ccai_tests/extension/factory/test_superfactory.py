@@ -13,6 +13,7 @@ from ccai.extension.factory.factoryprotocolbase import FactoryProtocolBase
 from ccai.extension.factory.superfactory import (
     is_subclass_of_factory_extension,
     load_and_set_factoryextension_types,
+    resolve_protocol_dispatch,
     scan_ccai_factories_namespace,
     scan_for_descendant_modules,
     SuperFactory
@@ -34,6 +35,20 @@ class ExampleProtocol(FactoryProtocolBase):
 
     @classmethod
     def get_many_types(cls):
+        raise NotImplementedError()
+
+
+class UnmatchedProtocol(FactoryProtocolBase):
+    """
+        A protocol whose ``factory_protocol_name`` no test factory implements,
+        used to exercise the no-match dispatch path.  Declared at module scope so
+        its method ``__qualname__`` resolves the protocol class via module globals.
+    """
+
+    factory_protocol_name = "unmatched"
+
+    @classmethod
+    def create_thing(cls, value):
         raise NotImplementedError()
 
 
@@ -226,6 +241,42 @@ class TestSuperFactory(unittest.TestCase):
         sf = SuperFactory(self.modules)
         result = list(sf.iterate_override_types_for_each(ExampleProtocol.get_many_types))
         self.assertEqual(result, ["B1", "B2", "A1", "A2"])
+
+    def test_create_instance_by_order_returns_none_when_no_factory_matches(self):
+        # No loaded factory advertises the "unmatched" protocol name, so dispatch
+        # must return None rather than raise.
+        sf = SuperFactory(self.modules)
+        result = sf.create_instance_by_order(UnmatchedProtocol.create_thing, "x")
+        self.assertIsNone(result)
+
+    def test_create_instance_for_each_empty_when_no_factory_matches(self):
+        sf = SuperFactory(self.modules)
+        result = sf.create_instance_for_each(UnmatchedProtocol.create_thing, "x")
+        self.assertEqual(result, [])
+
+    def test_create_instance_by_order_precedence_tie_last_inserted_wins(self):
+        # Two factories at identical PRECEDENCE; the stable sort preserves
+        # insertion order and create_instance_by_order takes the last match.
+        mod_d = "modd"
+        mod_e = "mode"
+        make_factory(mod_d, 7, "D")
+        make_factory(mod_e, 7, "E")
+        self.extra_modules.extend([mod_d, mod_e])
+
+        sf = SuperFactory([mod_d, mod_e])
+        result = sf.create_instance_by_order(ExampleProtocol.create_thing, "v")
+        self.assertEqual(result, "E:v")
+
+    def test_resolve_protocol_dispatch_raises_when_protocol_not_in_globals(self):
+        # A method whose qualname's leading component is not a name in its module
+        # globals must raise a descriptive RuntimeError, not an opaque KeyError.
+        def standalone():
+            raise NotImplementedError()
+        standalone.__qualname__ = "NoSuchProtocol.standalone"
+
+        with self.assertRaises(RuntimeError):
+            resolve_protocol_dispatch(standalone)
+
 
 if __name__ == "__main__":
     unittest.main()

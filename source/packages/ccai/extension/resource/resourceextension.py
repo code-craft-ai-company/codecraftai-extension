@@ -89,16 +89,18 @@ def collect_resource_extensions_under_code_container(container: ModuleType,
 
 
 def collect_resource_extensions_under_folder(extension_folder: str, ext_base_type: Type[ResourceExtension],
-                                    module_base: str="akit.ext.generated") -> List[type]:
+                                    module_base: str="ccai.ext.generated") -> List[type]:
     """
-        Scans the code `container` provide and all descendant containers for classes
-        that inherit from the type passed as `ext_base_type`
+        Scans the folder provided and all descendant folders for classes that are
+        direct subclasses of the type passed as `ext_base_type`.
 
-        :param container: A python package or module to scan for extension types.
+        :param extension_folder: A filesystem folder to scan for extension modules.
         :param ext_base_type: A python class type that serves as a base class to identify other
-                              types that are a type of extension.
+                              types that are a direct subclass of an extension.
+        :param module_base: The dotted module-name prefix under which the discovered
+                            modules are registered (e.g. ``ccai.ext.generated``).
 
-        :returns: A list of types found that inherit from `ext_base_type`
+        :returns: A list of types found that are direct subclasses of `ext_base_type`
     """
     ext_collection = []
 
@@ -127,8 +129,14 @@ def collect_resource_extensions_under_folder(extension_folder: str, ext_base_typ
 
             if nfbase == "__init__":
                 continue
-            
-            nxtmodname = "%s.%s.%s" % (module_base, leafcontainer, nfbase)
+
+            # Root-level files have an empty leafcontainer; omit it so we don't
+            # build a malformed double-dot module name (e.g. "ccai.ext.generated..good").
+            if len(leafcontainer) > 0:
+                nxtmodname = "%s.%s.%s" % (module_base, leafcontainer, nfbase)
+            else:
+                nxtmodname = "%s.%s" % (module_base, nfbase)
+
             nxtmod = import_file(nxtmodname, filefull, by_file_only=True)
             if nxtmod is None:
                 continue
