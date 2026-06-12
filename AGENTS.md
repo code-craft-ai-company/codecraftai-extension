@@ -33,10 +33,12 @@ the host package. It exposes two main flavours of extension point: a
 object construction, and a `ResourceExtension` for resources that must be
 discovered and registered at runtime.
 
-Extensions are typically declared via entry points and picked up by extension-
-aware packages such as `codecraftai-landscaping`, `codecraftai-interop`, and the
-`codecraftai-interop-ext-*` packages, which collectively use this mechanism to
-build a composable, opt-in ecosystem of device types, protocols, and services.
+Extensions are discovered by scanning the `ccai.factories` namespace on
+`sys.path` (and via explicit registration through `SuperFactory.add_factory_module`)
+and picked up by extension-aware packages such as `codecraftai-landscaping`,
+`codecraftai-interop`, and the `codecraftai-interop-ext-*` packages, which
+collectively use this mechanism to build a composable, opt-in ecosystem of device
+types, protocols, and services.
 
 # Testing Conventions
 The 'codecraftai-extension' package repository utilizes the 'unittest' framework in order to test the functionality of the code.
@@ -74,7 +76,7 @@ When work is being done on this repository using the Codex web environment.  Use
 When checking out the code for this repository in order to test changes, agents must:
 
 * run the 'repository-setup/rehome-repository' script.  It creates a needed '.env' file.
-* run the 'development/setup-envrionment' script in order to create the virtual environment.
+* run the 'development/setup-environment' script in order to create the virtual environment.
 
 # Project Specific Rules
 

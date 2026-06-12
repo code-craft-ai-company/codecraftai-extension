@@ -2,12 +2,12 @@
 name = "codecraftai-extension"
 description = "Code Craft AI - Extension Package"
 version = "0.0.1"
-authors = ["Myron W. Walker"]
+authors = ["Myron Walker <myron.walker@gmail.com>"]
 readme = "README.rst"
-license = "LICENSE.md"
+license = "LicenseRef-CodeCraftAI-Dual-License"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: Other/Proprietary License",
     "Operating System :: POSIX"
 ]
 keywords = [
@@ -19,8 +19,6 @@ packages = [{include="ccai", from="source/packages"}]
 python = ">=3.10,<4.0"
 
 [tool.poetry.group.dev.dependencies]
-
-[tool.poetry.group.dbio.dependencies]
 
 [build-system]
 requires = ["poetry-core"]

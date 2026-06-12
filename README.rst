@@ -2,14 +2,14 @@
 Code Craft AI Extension
 ==========================
 
-The ``codecraftai-extension`` package provides the lightweight extension and factory machinery that other ccai packages use to allow third-party code to plug in new resource types, coordinators, and protocol handlers without modifying the host package. Extensions are typically declared via entry points and picked up by extension-aware packages such as ``codecraftai-landscaping``, ``codecraftai-interop``, and the ``codecraftai-interop-ext-*`` packages.
+The ``codecraftai-extension`` package provides the lightweight extension and factory machinery that other ccai packages use to allow third-party code to plug in new resource types, coordinators, and protocol handlers without modifying the host package. Extensions are discovered by scanning the ``ccai.factories`` namespace on ``sys.path`` (and via explicit module registration through ``SuperFactory.add_factory_module``), and are picked up by extension-aware packages such as ``codecraftai-landscaping``, ``codecraftai-interop``, and the ``codecraftai-interop-ext-*`` packages.
 
 Highlights
 ==========
 
 - ``FactoryExtension`` plus ``FactoryProtocolBase`` and ``SuperFactory`` for pluggable object construction.
 - ``ResourceExtension`` for resources that must be discovered and registered at runtime.
-- Entry-point driven registration so third-party packages can contribute without modifying host code.
+- ``ccai.factories`` namespace scanning (plus explicit module registration) so third-party packages can contribute without modifying host code.
 - Used as the substrate for the composable ``codecraftai-interop-ext-*`` ecosystem of device types, protocols, and services.
 
 Repository Structure
@@ -36,7 +36,7 @@ For local development:
 .. code-block:: bash
 
    ./repository-setup/rehome-repository
-   ./development/setup-envrionment
+   ./development/setup-environment
 
 Running Tests
 =============
