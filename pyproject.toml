@@ -20,6 +20,12 @@ python = ">=3.10,<4.0"
 
 [tool.poetry.group.dev.dependencies]
 
+
+[[tool.poetry.source]]
+name = "codecraftai"
+url = "https://code-craft.ai/licensed-repository/simple/"
+priority = "supplemental"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
