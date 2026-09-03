@@ -46,6 +46,9 @@ jobs:
         run: |
           ./repository-setup/rehome-repository
 
+      - name: Configure the package index credential
+        run: poetry config http-basic.codecraftai deployment "${{ secrets.CCAI_ORG_READ_TOKEN }}"
+
       - name: Setup the Virtual Environment
         run: |
           ./development/setup-environment
