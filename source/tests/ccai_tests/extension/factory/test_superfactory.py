@@ -202,9 +202,25 @@ class TestSuperFactory(unittest.TestCase):
         for mod in self.modules + self.extra_modules:
             sys.modules.pop(mod, None)
 
+    def _own_factory_names(self, sf):
+        """
+            The names of the factories THIS test created, in the order the
+            super factory holds them.
+
+            ``SuperFactory.__init__`` always merges whatever it finds by
+            scanning ``sys.path`` for ``ccai/factories`` packages, so any
+            sibling package installed alongside (``codecraftai-testbase``
+            ships one) contributes factories of its own.  Asserting an exact
+            list would make this test depend on what else is installed;
+            filtering to our own factories keeps the ordering assertion
+            while tolerating ambient factories.
+        """
+        own = {"AFactory", "BFactory", "CFactory", "DFactory", "EFactory"}
+        return [cls.__name__ for cls in sf.extension_factories if cls.__name__ in own]
+
     def test_init_loads_sorted_factories(self):
         sf = SuperFactory(self.modules)
-        names = [cls.__name__ for cls in sf.extension_factories]
+        names = self._own_factory_names(sf)
         self.assertEqual(names, ["BFactory", "AFactory"])
         for mod in self.modules:
             self.assertIn(mod, sf.factory_modules)
@@ -218,7 +234,7 @@ class TestSuperFactory(unittest.TestCase):
 
         sf.add_factory_module(mod_c)
 
-        names = [cls.__name__ for cls in sf.extension_factories]
+        names = self._own_factory_names(sf)
         self.assertEqual(names, ["CFactory", "AFactory"])
         self.assertIn(mod_c, sf.factory_modules)
 
