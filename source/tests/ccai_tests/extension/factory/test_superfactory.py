@@ -1,11 +1,8 @@
-import logging
 import os
 import sys
 import tempfile
 import types
 import unittest
-
-from unittest.mock import patch
 
 from ccai.extension.utilities import import_by_name
 from ccai.extension.factory.factoryextension import FactoryExtension
